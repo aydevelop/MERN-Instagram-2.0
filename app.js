@@ -1,7 +1,7 @@
 const app = require('express')()
-const PORT = 5000
-const { MONGOURI } = require('./keys')
 const mongoose = require('mongoose')
+const { MONGOURI } = require('./keys')
+const PORT = 5000
 
 mongoose.connect(MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
