@@ -1,4 +1,5 @@
-const app = require('express')()
+const express = require('express')
+const app = express()
 const mongoose = require('mongoose')
 const { MONGOURI } = require('./keys')
 const PORT = 5000
@@ -12,6 +13,5 @@ db.on('open', () => {
   })
 })
 
-app.get('/', (req, res) => {
-  res.send('Hello world 123!!!!!!!!!!!')
-})
+app.use(express.json())
+app.use(require('./routes/auth'))
