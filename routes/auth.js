@@ -32,5 +32,26 @@ router.post(
     res.send('user saved')
   })
 )
+router.post(
+  '/signin',
+  t(async (req, res) => {
+    let { email, password } = req.body
+    if (!email || !password) {
+      return res.status(422).send('add email or password')
+    }
+
+    let check = await User.findOne({ email: email })
+    if (!check) {
+      return res.status(422).send('invalid email or password')
+    }
+
+    let isMatch = await bcrypt.compare(password, check.password)
+    if (!isMatch) {
+      return res.status(422).send('invalid password')
+    }
+
+    res.send('signed in')
+  })
+)
 
 module.exports = router
