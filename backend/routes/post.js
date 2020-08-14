@@ -30,4 +30,17 @@ router.post(
   })
 )
 
+router.get(
+  '/myposts',
+  verify,
+  t(async (req, res) => {
+    let posts = await Post.find({ postedBy: req.user._id }).populate(
+      'postedBy',
+      '_id name'
+    )
+
+    ok(res, 'my posts', posts)
+  })
+)
+
 module.exports = router
