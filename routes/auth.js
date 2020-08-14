@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
+const User = require('../models/user')
 const t = require('../init/try-catch')
 const { ok, fail } = require('../init/responses')
+const { JWT_SECRET } = require('../keys')
 
 router.get('/', (req, res) => {
   res.send('hello')
@@ -29,7 +32,7 @@ router.post(
       password,
     })
 
-    let result = await user.save()
+    let newUser = await user.save()
     ok(res, 'user saved')
   })
 )
@@ -41,17 +44,19 @@ router.post(
       return fail(res, 'add email or password')
     }
 
-    let check = await User.findOne({ email: email })
-    if (!check) {
+    let user = await User.findOne({ email: email })
+    if (!user) {
       return fail(res, 'invalid email or password')
     }
 
-    let isMatch = await bcrypt.compare(password, check.password)
+    let isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return fail(res, 'invalid password')
     }
 
-    ok(res, 'signed in', check)
+    let token = jwt.sign({ _id: user._id }, JWT_SECRET)
+
+    ok(res, 'signed in', { token })
   })
 )
 
