@@ -6,6 +6,14 @@ const t = require('../init/tryCatch')
 const { ok, fail } = require('../init/responses')
 const verify = require('../middleware/verifyToken')
 
+router.get(
+  '/allpost',
+  t(async (req, res) => {
+    let posts = await Post.find().populate('postedBy', '_id name')
+    ok(res, 'posts', posts)
+  })
+)
+
 router.post(
   '/createpost',
   verify,
