@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
-const t = require('../init/try-catch')
 const bcrypt = require('bcryptjs')
+const t = require('../init/try-catch')
+const { ok, fail } = require('../init/responses')
 
 router.get('/', (req, res) => {
   res.send('hello')
@@ -13,12 +14,12 @@ router.post(
   t(async (req, res) => {
     let { name, email, password } = req.body
     if (!email || !password || !name) {
-      return res.status(422).json({ error: 'not all fields' })
+      return fail(res, 'not all fields')
     }
 
     let check = await User.findOne({ email: email })
     if (check) {
-      return res.status(422).send('user exists')
+      return fail(res, 'user exists')
     }
 
     password = await bcrypt.hash(password, 12)
@@ -29,7 +30,7 @@ router.post(
     })
 
     let result = await user.save()
-    res.send('user saved')
+    ok(res, 'user saved')
   })
 )
 router.post(
@@ -37,20 +38,20 @@ router.post(
   t(async (req, res) => {
     let { email, password } = req.body
     if (!email || !password) {
-      return res.status(422).send('add email or password')
+      return fail(res, 'add email or password')
     }
 
     let check = await User.findOne({ email: email })
     if (!check) {
-      return res.status(422).send('invalid email or password')
+      return fail(res, 'invalid email or password')
     }
 
     let isMatch = await bcrypt.compare(password, check.password)
     if (!isMatch) {
-      return res.status(422).send('invalid password')
+      return fail(res, 'invalid password')
     }
 
-    res.send('signed in')
+    ok(res, 'signed in', check)
   })
 )
 
