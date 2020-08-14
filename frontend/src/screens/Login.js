@@ -1,20 +1,61 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import M from 'materialize-css'
 
 const Login = () => {
-  const [name, setName] = useState('')
+  const history = useHistory()
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
+
+  const postData = () => {
+    const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (!re.test(email)) {
+      M.toast({ html: 'invalid email' })
+      return
+    }
+
+    fetch('http://localhost:5000/signin', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        password,
+        email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error) {
+          M.toast({ html: res.error })
+        } else {
+          M.toast({ html: 'login successfully', classes: 'green dark-1' })
+          history.push('/')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   return (
     <div className='mycard'>
       <div className='card auth-card'>
         <h4 className='brand-logo'>Instagram 2.0</h4>
-        <input type='text' placeholder='Email' />
-        <input type='text' placeholder='Password' />
+        <input
+          type='text'
+          placeholder='Email'
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='Password'
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button
           style={{ marginTop: '20px' }}
           className='btn waves-effect waves-light'
+          onClick={postData}
         >
           Login
         </button>

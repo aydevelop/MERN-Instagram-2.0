@@ -45,7 +45,7 @@ router.post(
       return fail(res, 'add email or password')
     }
 
-    let user = await User.findOne({ email })
+    const user = await User.findOne({ email })
     if (!user) {
       return fail(res, 'invalid email or password')
     }
@@ -57,7 +57,8 @@ router.post(
 
     let token = jwt.sign({ _id: user._id }, JWT_SECRET)
 
-    ok(res, 'signed in', { token })
+    const { _id, name } = user
+    ok(res, 'signed in', { token, user: { _id, name, email } })
   })
 )
 
