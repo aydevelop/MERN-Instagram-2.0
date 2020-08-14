@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const cors = require('cors')
 const { MONGOURI } = require('./keys')
 const PORT = 5000
 
@@ -15,6 +16,7 @@ db.on('open', () => {
 
 //-------------------------------------------------------
 app.use(express.json())
+app.use(cors())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
 

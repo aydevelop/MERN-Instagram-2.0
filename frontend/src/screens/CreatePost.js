@@ -23,8 +23,8 @@ const CreatePost = () => {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <a class='waves-effect waves-light btn red lighten-1'>
-            <i class='material-icons left'>image</i>Submit post
+          <a className='waves-effect waves-light btn red lighten-1'>
+            <i className='material-icons left'>image</i>Submit post
           </a>
         </div>
       </div>
