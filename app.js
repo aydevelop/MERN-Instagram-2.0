@@ -16,6 +16,7 @@ db.on('open', () => {
 //-------------------------------------------------------
 app.use(express.json())
 app.use(require('./routes/auth'))
+app.use(require('./routes/post'))
 
 app.use(function (err, req, res, next) {
   res.status(500).json({
