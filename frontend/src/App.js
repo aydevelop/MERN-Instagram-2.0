@@ -7,6 +7,7 @@ import Home from './screens/Home'
 import Signup from './screens/Signup'
 import Login from './screens/Login'
 import Profile from './screens/Profile'
+import CreatePost from './screens/CreatePost'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/profile' component={Profile} />
+        <Route exact path='/create' component={CreatePost} />
       </div>
     </BrowserRouter>
   )

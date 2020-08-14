@@ -4,7 +4,9 @@ const Home = () => {
   return (
     <div className='home'>
       <div className='card home-card'>
-        <h5>Ramesh</h5>
+        <div style={{ textAlign: 'center', paddingTop: '1px' }}>
+          <h5>Ramesh</h5>
+        </div>
         <div className='card-image'>
           <img
             alt=''
@@ -13,7 +15,7 @@ const Home = () => {
           />
         </div>
         <div className='card-content'>
-          <i class='material-icons' style={{ color: '#e53935' }}>
+          <i className='material-icons' style={{ color: '#e53935' }}>
             favorite
           </i>
           <h6>title</h6>
