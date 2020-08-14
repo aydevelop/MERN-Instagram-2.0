@@ -4,9 +4,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
-const t = require('../init/try-catch')
+const t = require('../init/tryCatch')
 const { ok, fail } = require('../init/responses')
 const { JWT_SECRET } = require('../keys')
+const verify = require('../middleware/verifyToken')
 
 router.get('/', (req, res) => {
   res.send('hello')
@@ -20,7 +21,7 @@ router.post(
       return fail(res, 'not all fields')
     }
 
-    let check = await User.findOne({ email: email })
+    let check = await User.findOne({ email })
     if (check) {
       return fail(res, 'user exists')
     }
@@ -44,7 +45,7 @@ router.post(
       return fail(res, 'add email or password')
     }
 
-    let user = await User.findOne({ email: email })
+    let user = await User.findOne({ email })
     if (!user) {
       return fail(res, 'invalid email or password')
     }
@@ -59,5 +60,9 @@ router.post(
     ok(res, 'signed in', { token })
   })
 )
+
+router.get('/protected', verify, (req, res) => {
+  ok(res, 'verify')
+})
 
 module.exports = router
