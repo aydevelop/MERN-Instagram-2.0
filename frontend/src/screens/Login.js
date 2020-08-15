@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import M from 'materialize-css'
+import { UserContext } from '../App'
 
 const Login = () => {
+  const { state, dispatch } = useContext(UserContext)
   const history = useHistory()
   const [password, setPassword] = useState('test@mail.com')
   const [email, setEmail] = useState('test@mail.com')
 
   const postData = window.try(async () => {
-    const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const re = /^(([^<>()\\[\]\\.,;:\s@" ]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (!re.test(email)) {
       return M.toast({ html: 'invalid email' })
     }
@@ -29,6 +31,7 @@ const Login = () => {
       M.toast({ html: 'login successfully', classes: 'green dark-1' })
       localStorage.setItem('jwt', json.data.token)
       localStorage.setItem('user', json.data.user)
+      dispatch({ type: 'USER', payload: json.data.user })
       history.push('/')
     }
   })
