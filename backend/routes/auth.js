@@ -34,7 +34,7 @@ router.post(
     })
 
     let newUser = await user.save()
-    ok(res, 'user saved')
+    ok(res, 'user saved ')
   })
 )
 router.post(

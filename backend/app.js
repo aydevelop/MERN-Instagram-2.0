@@ -19,6 +19,7 @@ app.use(express.json())
 app.use(cors())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
+global.t = 123
 
 app.use(function (err, req, res, next) {
   res.status(500).json({

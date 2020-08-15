@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const CreatePost = () => {
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div
@@ -11,8 +14,18 @@ const CreatePost = () => {
         }}
         className='card input-field'
       >
-        <input type='text' placeholder='title' />
-        <input type='text' placeholder='body' />
+        <input
+          type='text'
+          placeholder='title'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='body'
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+        />
         <div className='file-field input-field'>
           <div className='btn'>
             <span>File</span>

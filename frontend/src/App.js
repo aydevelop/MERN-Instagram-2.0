@@ -8,19 +8,22 @@ import Signup from './screens/Signup'
 import Login from './screens/Login'
 import Profile from './screens/Profile'
 import CreatePost from './screens/CreatePost'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className='container'>
-        <NavBar />
-        <Route exact path='/' component={Home} />
-        <Route exact path='/signup' component={Signup} />
-        <Route exact path='/login' component={Login} />
-        <Route exact path='/profile' component={Profile} />
-        <Route exact path='/create' component={CreatePost} />
-      </div>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <div className='container'>
+          <NavBar />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/signup' component={Signup} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/profile' component={Profile} />
+          <Route exact path='/create' component={CreatePost} />
+        </div>
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }
 
