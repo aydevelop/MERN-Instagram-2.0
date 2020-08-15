@@ -20,15 +20,18 @@ const CreatePost = () => {
         body: data,
       }
     )
-    setPhoto(await cloudinary.json().url)
+    const { url } = await cloudinary.json()
 
-    const post = await fetch('http://localhost:5000/createpost', {
+    const post = await fetch('/createpost', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
       body: JSON.stringify({
         title,
         body,
-        photo,
+        photo: url,
       }),
     })
 

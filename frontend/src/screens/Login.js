@@ -27,6 +27,8 @@ const Login = () => {
       M.toast({ html: json.error })
     } else {
       M.toast({ html: 'login successfully', classes: 'green dark-1' })
+      localStorage.setItem('jwt', json.data.token)
+      localStorage.setItem('user', json.data.user)
       history.push('/')
     }
   })
