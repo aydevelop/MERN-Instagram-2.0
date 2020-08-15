@@ -18,12 +18,12 @@ router.post(
   '/createpost',
   verify,
   t(async (req, res) => {
-    let { title, body } = req.body
-    if (!title || !body) {
+    let { title, body, photo } = req.body
+    if (!title || !body || !photo) {
       fail(res, 'not all fields')
     }
 
-    let newPost = new Post({ title, body, postedBy: req.user._id })
+    let newPost = new Post({ title, body, photo, postedBy: req.user._id })
     let result = await newPost.save()
 
     ok(res, 'saved', result)
