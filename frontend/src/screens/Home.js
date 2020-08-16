@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
 const Home = () => {
   const [data, setData] = useState([])
+  const history = useHistory()
 
   const getPosts = window.try(async () => {
     const posts = await fetch('/allpost', {
@@ -11,7 +13,11 @@ const Home = () => {
     })
 
     const result = await posts.json()
-    setData(result.data)
+    if (result.data) {
+      setData(result.data)
+    } else {
+      history.push('/login')
+    }
   })
 
   useEffect(() => {

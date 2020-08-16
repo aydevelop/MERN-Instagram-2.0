@@ -23,7 +23,7 @@ const Routing = () => {
     } else {
       history.push('/login')
     }
-  })
+  }, [])
 
   return (
     <React.Fragment>

@@ -13,7 +13,9 @@ const Profile = () => {
     })
 
     const result = await posts.json()
-    setData(result.data)
+    if (result.data) {
+      setData(result.data)
+    }
   })
 
   useEffect(() => {

@@ -30,7 +30,7 @@ const Login = () => {
     } else {
       M.toast({ html: 'login successfully', classes: 'green dark-1' })
       localStorage.setItem('jwt', json.data.token)
-      localStorage.setItem('user', json.data.user)
+      localStorage.setItem('user', JSON.stringify(json.data.user))
       dispatch({ type: 'USER', payload: json.data.user })
       history.push('/')
     }

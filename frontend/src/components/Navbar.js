@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { UserContext } from '../App'
 
 const NavBar = () => {
   const { state, dispatch } = useContext(UserContext)
+  const history = useHistory()
 
   const renderList = () => {
-    if (state) {
+    if (localStorage.getItem('user')) {
       return (
         <React.Fragment>
           <li>
@@ -17,12 +18,11 @@ const NavBar = () => {
           </li>
           <li>
             <a
-              href='#'
               onClick={() => {
                 localStorage.clear()
                 dispatch({ type: 'CLEAR' })
+                history.push('/login')
               }}
-              className='btn red lighten-2'
             >
               Logout
             </a>
@@ -46,9 +46,9 @@ const NavBar = () => {
   return (
     <nav>
       <div className='nav-wrapper'>
-        <a href='/' style={{ marginLeft: '20px' }} className='brand-logo left'>
+        <Link to='/' style={{ marginLeft: '20px' }} className='brand-logo left'>
           Instagram &nbsp;2.0
-        </a>
+        </Link>
         <ul id='nav-mobile' className='right'>
           {renderList()}
         </ul>
