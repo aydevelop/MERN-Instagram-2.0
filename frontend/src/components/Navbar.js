@@ -15,6 +15,18 @@ const NavBar = () => {
           <li>
             <Link to='/create'>Create Post</Link>
           </li>
+          <li>
+            <a
+              href='#'
+              onClick={() => {
+                localStorage.clear()
+                dispatch({ type: 'CLEAR' })
+              }}
+              className='btn red lighten-2'
+            >
+              Logout
+            </a>
+          </li>
         </React.Fragment>
       )
     } else {
