@@ -8,6 +8,7 @@ const verify = require('../middleware/verifyToken')
 
 router.get(
   '/allpost',
+  verify,
   t(async (req, res) => {
     let posts = await Post.find().populate('postedBy', '_id name')
     ok(res, 'posts', posts)
