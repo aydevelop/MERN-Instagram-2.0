@@ -1,6 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../App'
 
 const Profile = () => {
+  const [data, setData] = useState([])
+  const { state, dispatch } = useContext(UserContext)
+
+  const getMyPosts = window.try(async () => {
+    const posts = await fetch('/myposts', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    })
+
+    const result = await posts.json()
+    setData(result.data)
+  })
+
+  useEffect(() => {
+    getMyPosts()
+  }, [])
+
   return (
     <div>
       <div
@@ -20,7 +39,7 @@ const Profile = () => {
         </div>
         <div style={{ width: '100%' }}>
           <div style={{ textAlign: 'center' }}>
-            <h4>Ramesh Verma</h4>
+            <h4>{state ? state.name : 'loading'}</h4>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <h6>
@@ -37,33 +56,9 @@ const Profile = () => {
       </div>
 
       <div className='gallery'>
-        <img
-          alt=''
-          className='item'
-          src='https://images.unsplash.com/photo-1597117489038-bba57da6c58f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80'
-        />
-
-        <img
-          alt=''
-          className='item'
-          src='https://images.unsplash.com/photo-1597117489038-bba57da6c58f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80'
-        />
-
-        <img
-          alt=''
-          className='item'
-          src='https://images.unsplash.com/photo-1597117489038-bba57da6c58f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80'
-        />
-        <img
-          alt=''
-          className='item'
-          src='https://images.unsplash.com/photo-1597117489038-bba57da6c58f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80'
-        />
-        <img
-          alt=''
-          className='item'
-          src='https://images.unsplash.com/photo-1597117489038-bba57da6c58f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80'
-        />
+        {data.map((item) => {
+          return <img key={item._id} alt='' className='item' src={item.photo} />
+        })}
       </div>
     </div>
   )
