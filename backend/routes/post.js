@@ -44,4 +44,40 @@ router.get(
   })
 )
 
+router.post(
+  '/like',
+  verify,
+  t(async (req, res) => {
+    const like = await Post.findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { likes: req.user._id },
+      },
+      {
+        new: true,
+      }
+    ).exec()
+
+    ok(res, 'liked', like)
+  })
+)
+
+router.post(
+  '/unlike',
+  verify,
+  t(async (req, res) => {
+    const unlike = await Post.findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { likes: req.user._id },
+      },
+      {
+        new: true,
+      }
+    ).exec()
+
+    ok(res, 'unliked', unlike)
+  })
+)
+
 module.exports = router

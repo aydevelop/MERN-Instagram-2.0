@@ -14,7 +14,7 @@ const Home = () => {
 
     const result = await posts.json()
     if (result.data) {
-      setData(result.data)
+      setData(result.data.reverse())
     } else {
       history.push('/login')
     }
