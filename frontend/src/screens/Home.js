@@ -87,6 +87,22 @@ const Home = () => {
     setData(newData)
   })
 
+  const deletePost = window.try(async (postId) => {
+    let post = await fetch(`/deletepost/${postId}`, {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    })
+
+    const newData = data.filter((item) => {
+      return item._id !== postId
+    })
+
+    setData(newData)
+  })
+
   useEffect(() => {
     getPosts()
   }, [])
@@ -96,8 +112,27 @@ const Home = () => {
       {data.map((item) => {
         return (
           <div key={item._id} className='card home-card'>
-            <div style={{ textAlign: 'center', paddingTop: '1px' }}>
-              <h5>Ramesh</h5>
+            <div style={{ float: 'left', marginLeft: '25px' }}>
+              <h5>{item.postedBy.name}</h5>
+            </div>
+            <div
+              onClick={() => {
+                deletePost(item._id)
+              }}
+              style={{
+                textAlign: 'right',
+                paddingRight: '10px',
+                paddingTop: '3px',
+                cursor: 'pointer',
+              }}
+            >
+              {state?._id === item.postedBy._id ? (
+                <h5>
+                  <i className='material-icons'>delete</i>
+                </h5>
+              ) : (
+                <h5>&nbsp;</h5>
+              )}
             </div>
             <div className='card-image'>
               <img alt='' className='item' src={item.photo} />

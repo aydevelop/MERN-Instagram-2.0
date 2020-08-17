@@ -108,4 +108,22 @@ router.post(
   })
 )
 
+router.delete(
+  '/deletepost/:postId',
+  verify,
+  t(async (req, res) => {
+    let post = await Post.findOne({ _id: req.params.postId }).populate(
+      'postedBy',
+      '_id name'
+    )
+
+    if (post.postedBy._id.toString() == req.user._id.toString()) {
+      await post.remove()
+      ok(res, 'deleted')
+    } else {
+      fail(res, 'error')
+    }
+  })
+)
+
 module.exports = router
