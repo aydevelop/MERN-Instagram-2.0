@@ -40,6 +40,12 @@ const Routing = () => {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  useEffect(() => {
+    const user = localStorage.getItem('user')
+    dispatch({ type: 'USER', payload: JSON.parse(user) })
+  }, [])
+
   return (
     <ErrorBoundary>
       <UserContext.Provider value={{ state, dispatch }}>

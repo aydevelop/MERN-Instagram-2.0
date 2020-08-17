@@ -69,7 +69,7 @@ router.post(
     const unlike = await Post.findByIdAndUpdate(
       req.body.postId,
       {
-        $push: { likes: req.user._id },
+        $pull: { likes: req.user._id },
       },
       {
         new: true,
