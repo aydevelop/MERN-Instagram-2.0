@@ -22,7 +22,7 @@ const Home = () => {
     }
   })
 
-  const likePost = async (e, id) => {
+  const likePost = window.try(async (e, id) => {
     e.preventDefault()
     const like = await fetch('/like', {
       method: 'post',
@@ -42,9 +42,9 @@ const Home = () => {
     })
 
     setData(newData)
-  }
+  })
 
-  const unlikePost = async (e, id) => {
+  const unlikePost = window.try(async (e, id) => {
     e.preventDefault()
     let unlike = await fetch('/unlike', {
       method: 'post',
@@ -64,7 +64,28 @@ const Home = () => {
     })
 
     setData(newData)
-  }
+  })
+
+  const makeComment = window.try(async (text, postId) => {
+    let comment = await fetch('/comment', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({ postId, text }),
+    })
+
+    let jComment = await comment.json()
+    const newData = data.map((item) => {
+      if (item._id === postId) {
+        return jComment.data
+      }
+      return item
+    })
+
+    setData(newData)
+  })
 
   useEffect(() => {
     getPosts()
@@ -118,7 +139,31 @@ const Home = () => {
               <div style={{ marginTop: '30px', marginBottom: '30px' }}>
                 <h6>{item.title}</h6>
                 <p>{item.body}</p>
-                <input type='text' placeholder='add a comment' />
+                <div style={{ textAlign: 'right' }}>
+                  {item.comments.map((item) => {
+                    return (
+                      <div>
+                        <div>
+                          {item.postedBy.name}: {item.text}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (e.target[0].value.trim()) {
+                      makeComment(e.target[0].value.trim(), item._id)
+                      e.target[0].value = ''
+                    }
+                  }}
+                >
+                  <input
+                    type='text'
+                    placeholder='add a comment & press `enter`'
+                  />
+                </form>
               </div>
             </div>
           </div>

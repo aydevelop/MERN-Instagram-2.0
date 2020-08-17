@@ -10,7 +10,9 @@ router.get(
   '/allpost',
   verify,
   t(async (req, res) => {
-    let posts = await Post.find().populate('postedBy', '_id name')
+    let posts = await Post.find()
+      .populate('postedBy', '_id name')
+      .populate('comments.postedBy', '_id name')
     ok(res, 'posts', posts)
   })
 )
@@ -35,10 +37,9 @@ router.get(
   '/myposts',
   verify,
   t(async (req, res) => {
-    let posts = await Post.find({ postedBy: req.user._id }).populate(
-      'postedBy',
-      '_id name'
-    )
+    let posts = await Post.find({ postedBy: req.user._id })
+      .populate('postedBy', '_id name')
+      .populate('comments.postedBy', '_id name')
 
     ok(res, 'my posts', posts)
   })
@@ -56,7 +57,9 @@ router.post(
       {
         new: true,
       }
-    ).exec()
+    )
+      .populate('postedBy', '_id name')
+      .populate('comments.postedBy', '_id name')
 
     ok(res, 'liked', like)
   })
@@ -74,9 +77,34 @@ router.post(
       {
         new: true,
       }
-    ).exec()
+    )
+      .populate('postedBy', '_id name')
+      .populate('comments.postedBy', '_id name')
 
     ok(res, 'unliked', unlike)
+  })
+)
+
+router.post(
+  '/comment',
+  verify,
+  t(async (req, res) => {
+    const comment = {
+      text: req.body.text,
+      postedBy: req.user._id,
+    }
+
+    const unlike = await Post.findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { comments: comment },
+      },
+      {
+        new: true,
+      }
+    ).populate('comments.postedBy', '_id name')
+
+    ok(res, 'comment saved', unlike)
   })
 )
 
