@@ -35,7 +35,7 @@ const Profile = () => {
         <div>
           <img
             style={{ width: '130px', borderRadius: '80px' }}
-            src={require('../assets/avatar.svg')}
+            src={state?.avatar ? state.avatar : require('../assets/avatar.svg')}
             alt=''
           />
         </div>

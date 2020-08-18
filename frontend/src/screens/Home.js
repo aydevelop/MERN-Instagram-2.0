@@ -114,9 +114,13 @@ const Home = () => {
           <div key={item._id} className='card home-card'>
             <div style={{ float: 'left', marginLeft: '25px' }}>
               <h5>
-                <Link to={'/profile/' + item.postedBy._id}>
-                  {item.postedBy.name}
-                </Link>
+                {state?._id !== item.postedBy._id ? (
+                  <Link to={'/profile/' + item.postedBy._id}>
+                    {item.postedBy.name}
+                  </Link>
+                ) : (
+                  <span>{item.postedBy.name}</span>
+                )}
               </h5>
             </div>
             <div

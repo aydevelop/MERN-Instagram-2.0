@@ -9,7 +9,28 @@ const SignUp = () => {
   const [email, setEmail] = useState('')
   const [avatar, setAvatar] = useState('')
 
-  const postData = () => {
+  const uploadAvatar = async () => {
+    const data = new FormData()
+    data.append('file', avatar)
+    data.append('upload_preset', 'hxilo3elfhxilo4elf')
+
+    const cloudinary = await fetch(
+      'https://api.cloudinary.com/v1_1/dkc4cdo9u/upload',
+      {
+        method: 'post',
+        body: data,
+      }
+    )
+    const { url } = await cloudinary.json()
+    return url
+  }
+
+  const postData = async () => {
+    let avatarUrl = ''
+    if (avatar) {
+      avatarUrl = await uploadAvatar()
+    }
+
     const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (!re.test(email)) {
       M.toast({ html: 'invalid email' })
@@ -25,6 +46,7 @@ const SignUp = () => {
         name,
         password,
         email,
+        avatar: avatarUrl,
       }),
     })
       .then((res) => res.json())
@@ -44,7 +66,7 @@ const SignUp = () => {
   return (
     <div className='mycard'>
       <div className='card auth-card'>
-        <h4 className='brand-logo'>Instagram 2.0</h4>
+        <h4 className='brand-logo'>Instagram 2.0 {avatar && typeof avatar}</h4>
         <input
           type='text'
           placeholder='Name'

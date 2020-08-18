@@ -16,7 +16,8 @@ router.get('/', (req, res) => {
 router.post(
   '/signup',
   t(async (req, res) => {
-    let { name, email, password } = req.body
+    let { name, email, password, avatar } = req.body
+
     if (!email || !password || !name) {
       return fail(res, 'not all fields')
     }
@@ -31,6 +32,7 @@ router.post(
       name,
       email,
       password,
+      avatar,
     })
 
     let newUser = await user.save()
