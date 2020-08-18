@@ -17,8 +17,24 @@ const UserProfile = () => {
     const result = await posts.json()
     if (result.data) {
       setData(result.data)
-      console.log(JSON.stringify(result.data))
+      dispatch({ type: 'UPDATE', payload: result.data.user })
     }
+  })
+
+  const followUser = window.try(async () => {
+    const result = await fetch('/follow', {
+      method: 'post',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        followId: userId,
+      }),
+    })
+
+    const jResult = await result.json()
+    dispatch({ type: 'UPDATE', payload: jResult.data })
   })
 
   useEffect(() => {
@@ -52,11 +68,18 @@ const UserProfile = () => {
               <b>{data.posts?.length}</b> posts
             </h6>
             <h6>
-              <b>40</b> followers
+              <b>{state?.following?.length}</b> following
             </h6>
             <h6>
-              <b>40</b> following
+              <b>{state?.followers?.length}</b> followers
             </h6>
+            <button
+              style={{ marginTop: '5px' }}
+              className='btn-small waves-effect waves-light'
+              onClick={followUser}
+            >
+              Follow
+            </button>
           </div>
         </div>
       </div>

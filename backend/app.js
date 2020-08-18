@@ -6,7 +6,11 @@ const { MONGOURI } = require('./keys')
 const PORT = 5000
 
 //-------------------------------------------------------
-mongoose.connect(MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGOURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+})
 const db = mongoose.connection
 db.on('open', () => {
   app.listen(PORT, () => {

@@ -13,7 +13,7 @@ router.get(
   t(async (req, res) => {
     let id = req.params.id
 
-    let user = await User.findOne({ _id: id }).select('-password')
+    let user = await await User.findOne({ _id: id }).select('-password')
     if (user) {
       let posts = await Post.find({ postedBy: id })
       return ok(res, 'posts by ' + id, { user, posts })
@@ -29,9 +29,15 @@ router.post(
   t(async (req, res) => {
     let id = req.body.followId
 
-    let user = await User.findByIdAndUpdate(id, {
-      $push: { followers: req.user._id },
-    })
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        $push: { followers: req.user._id },
+      },
+      {
+        new: true,
+      }
+    )
 
     if (!user) {
       return fail(res, 'user not exists')
@@ -39,7 +45,8 @@ router.post(
 
     await User.findByIdAndUpdate(req.user._id, {
       $push: { following: id },
-    })
+    }).select('-password')
+    ok(res, 'user', user)
   })
 )
 
