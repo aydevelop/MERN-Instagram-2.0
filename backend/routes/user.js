@@ -23,4 +23,44 @@ router.get(
   })
 )
 
+router.post(
+  '/follow',
+  verify,
+  t(async (req, res) => {
+    let id = req.body.followId
+
+    let user = await User.findByIdAndUpdate(id, {
+      $push: { followers: req.user._id },
+    })
+
+    if (!user) {
+      return fail(res, 'user not exists')
+    }
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { following: id },
+    })
+  })
+)
+
+router.post(
+  '/unfollow',
+  verify,
+  t(async (req, res) => {
+    let id = req.body.unfollowId
+
+    let user = await User.findByIdAndUpdate(id, {
+      $pull: { followers: req.user._id },
+    })
+
+    if (!user) {
+      return fail(res, 'user not exists')
+    }
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $pull: { following: id },
+    })
+  })
+)
+
 module.exports = router
