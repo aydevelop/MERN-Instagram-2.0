@@ -43,10 +43,11 @@ router.post(
       return fail(res, 'user not exists')
     }
 
-    await User.findByIdAndUpdate(req.user._id, {
+    const user2 = await User.findByIdAndUpdate(req.user._id, {
       $push: { following: id },
     }).select('-password')
-    ok(res, 'user', user)
+
+    ok(res, 'user', { user, user2 })
   })
 )
 
@@ -54,20 +55,27 @@ router.post(
   '/unfollow',
   verify,
   t(async (req, res) => {
-    let id = req.body.unfollowId
+    let id = req.body.followId
 
-    let user = await User.findByIdAndUpdate(id, {
-      $pull: { followers: req.user._id },
-    })
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        $pull: { followers: req.user._id },
+      },
+      {
+        new: true,
+      }
+    )
 
     if (!user) {
       return fail(res, 'user not exists')
     }
 
-    await User.findByIdAndUpdate(req.user._id, {
+    const user2 = await User.findByIdAndUpdate(req.user._id, {
       $pull: { following: id },
-    })
+    }).select('-password')
+
+    ok(res, 'user', { user, user2 })
   })
 )
-
 module.exports = router
