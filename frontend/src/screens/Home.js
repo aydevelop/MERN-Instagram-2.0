@@ -113,7 +113,11 @@ const Home = () => {
         return (
           <div key={item._id} className='card home-card'>
             <div style={{ float: 'left', marginLeft: '25px' }}>
-              <h5>{item.postedBy.name}</h5>
+              <h5>
+                <Link to={'/profile/' + item.postedBy._id}>
+                  {item.postedBy.name}
+                </Link>
+              </h5>
             </div>
             <div
               onClick={() => {
@@ -179,7 +183,11 @@ const Home = () => {
                     return (
                       <div>
                         <div>
-                          {item.postedBy.name}: {item.text}
+                          [
+                          <Link to={'/profile/' + item.postedBy._id}>
+                            {item.postedBy.name}
+                          </Link>
+                          ] : {item.text}
                         </div>
                       </div>
                     )

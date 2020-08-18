@@ -13,6 +13,8 @@ router.get(
     let posts = await Post.find()
       .populate('postedBy', '_id name')
       .populate('comments.postedBy', '_id name')
+      .lean()
+
     ok(res, 'posts', posts)
   })
 )

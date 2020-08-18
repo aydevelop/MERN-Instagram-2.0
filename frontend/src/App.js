@@ -7,6 +7,7 @@ import Home from './screens/Home'
 import Signup from './screens/Signup'
 import Login from './screens/Login'
 import Profile from './screens/Profile'
+import UserProfile from './screens/UserProfile'
 import CreatePost from './screens/CreatePost'
 import ErrorBoundary from './components/ErrorBoundary'
 import { reducer, initialState } from './reducers/userReducer'
@@ -18,9 +19,7 @@ const Routing = () => {
 
   useEffect(() => {
     const user = localStorage.getItem('user')
-    if (user) {
-      history.push('/')
-    } else {
+    if (!user) {
       history.push('/login')
     }
   }, [])
@@ -31,6 +30,7 @@ const Routing = () => {
         <Route exact path='/' component={Home} />
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/login' component={Login} />
+        <Route exact path='/profile/:userId' component={UserProfile} />
         <Route exact path='/profile' component={Profile} />
         <Route exact path='/create' component={CreatePost} />
       </Switch>
