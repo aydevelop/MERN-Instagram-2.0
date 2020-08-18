@@ -41,6 +41,7 @@ const UserProfile = () => {
     })
 
     dispatch({ type: 'UPDATE', payload: jResult.data.user2 })
+    localStorage.setItem('user', JSON.stringify(jResult.data.user2))
   })
 
   const unfollowUser = window.try(async () => {
@@ -64,6 +65,7 @@ const UserProfile = () => {
     })
 
     dispatch({ type: 'UPDATE', payload: jResult.data.user2 })
+    localStorage.setItem('user', JSON.stringify(jResult.data.user2))
   })
 
   useEffect(() => {

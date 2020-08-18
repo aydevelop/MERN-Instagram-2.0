@@ -90,4 +90,5 @@ router.post(
     ok(res, 'user', { user, user2 })
   })
 )
+
 module.exports = router

@@ -7,6 +7,7 @@ const SignUp = () => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
+  const [avatar, setAvatar] = useState('')
 
   const postData = () => {
     const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -59,6 +60,18 @@ const SignUp = () => {
           placeholder='Password'
           onChange={(e) => setPassword(e.target.value)}
         />
+        <div className='file-field input-field'>
+          <div
+            className='btn'
+            style={{ lineHeight: '2rem', height: 'auto', marginTop: '10px' }}
+          >
+            <span>Avatar</span>
+            <input type='file' onChange={(e) => setAvatar(e.target.files[0])} />
+          </div>
+          <div className='file-path-wrapper'>
+            <input className='file-path validate' type='text' />
+          </div>
+        </div>
         <button
           style={{ marginTop: '20px' }}
           className='btn waves-effect waves-light'
