@@ -185,13 +185,9 @@ const Home = () => {
                 <div style={{ textAlign: 'right' }}>
                   {item.comments.map((item) => {
                     return (
-                      <div>
+                      <div key={item._id}>
                         <div>
-                          [
-                          <Link to={'/profile/' + item.postedBy._id}>
-                            {item.postedBy.name}
-                          </Link>
-                          ] : {item.text}
+                          {item.postedBy.name}: {item.text}
                         </div>
                       </div>
                     )

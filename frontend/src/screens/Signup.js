@@ -12,7 +12,7 @@ const SignUp = () => {
   const uploadAvatar = async () => {
     const data = new FormData()
     data.append('file', avatar)
-    data.append('upload_preset', 'hxilo3elfhxilo4elf')
+    data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_API_KEY)
 
     const cloudinary = await fetch(
       'https://api.cloudinary.com/v1_1/dkc4cdo9u/upload',
