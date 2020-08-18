@@ -45,13 +45,13 @@ const Profile = () => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <h6>
-              <b>40</b> posts
+              <b>{data.length}</b> posts
             </h6>
             <h6>
-              <b>40</b> followers
+              <b>{state?.following?.length}</b> following
             </h6>
             <h6>
-              <b>40</b> following
+              <b>{state?.followers?.length}</b> followers
             </h6>
           </div>
         </div>

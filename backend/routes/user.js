@@ -43,9 +43,15 @@ router.post(
       return fail(res, 'user not exists')
     }
 
-    const user2 = await User.findByIdAndUpdate(req.user._id, {
-      $push: { following: id },
-    }).select('-password')
+    const user2 = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $push: { following: id },
+      },
+      {
+        new: true,
+      }
+    ).select('-password')
 
     ok(res, 'user', { user, user2 })
   })
@@ -71,9 +77,15 @@ router.post(
       return fail(res, 'user not exists')
     }
 
-    const user2 = await User.findByIdAndUpdate(req.user._id, {
-      $pull: { following: id },
-    }).select('-password')
+    const user2 = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $pull: { following: id },
+      },
+      {
+        new: true,
+      }
+    ).select('-password')
 
     ok(res, 'user', { user, user2 })
   })

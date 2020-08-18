@@ -56,9 +56,8 @@ router.post(
     }
 
     let token = jwt.sign({ _id: user._id }, JWT_SECRET)
-
-    const { _id, name } = user
-    ok(res, 'signed in', { token, user: { _id, name, email } })
+    user.password = undefined
+    ok(res, 'signed in', { token, user })
   })
 )
 
