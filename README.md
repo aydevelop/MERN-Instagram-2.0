@@ -1,6 +1,7 @@
 # MERN-Instagram-2.0
 
 keys.js need to put in a folder backend
+
 ------------------------------ file format ------------------------------
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
 }
 
 .env need to put in a folder frontend
+
 ------------------------------ file format ------------------------------
 
 EXTEND_ESLINT=true
