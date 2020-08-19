@@ -12,4 +12,5 @@ module.exports = {
 ------------------------------ file format ------------------------------
 
 EXTEND_ESLINT=true
+
 REACT_APP_CLOUDINARY_API_KEY='your api key'
