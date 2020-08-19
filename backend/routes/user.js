@@ -6,6 +6,7 @@ const Post = require('../models/post')
 const t = require('../init/tryCatch')
 const { ok, fail } = require('../init/responses')
 const verify = require('../middleware/verifyToken')
+const user = require('../models/user')
 
 router.get(
   '/user/:id',
@@ -88,6 +89,18 @@ router.post(
     ).select('-password')
 
     ok(res, 'user', { user, user2 })
+  })
+)
+
+router.post(
+  '/search-users',
+  verify,
+  t(async (req, res) => {
+    let = userPattern = new RegExp('^' + req.body.query, 'i')
+    let users = await User.find({ name: { $regex: userPattern } }).select(
+      '_id email name'
+    )
+    ok(res, 'users', users)
   })
 )
 

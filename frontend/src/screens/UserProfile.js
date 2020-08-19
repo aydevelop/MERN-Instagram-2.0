@@ -70,7 +70,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     getMyPosts()
-  }, [])
+  }, [userId])
 
   return (
     <div>

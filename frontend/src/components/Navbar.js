@@ -7,7 +7,8 @@ const NavBar = () => {
   const modal = useRef(null)
   const { state, dispatch } = useContext(UserContext)
   const history = useHistory()
-  const [search, setSearch] = useState('tmp')
+  const [search, setSearch] = useState('')
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
     M.Modal.init(modal.current)
@@ -58,6 +59,22 @@ const NavBar = () => {
     }
   }
 
+  const fetchUsers = window.try(async (query) => {
+    setSearch(query)
+
+    const users = await fetch(`/search-users`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({ query }),
+    })
+
+    const json = await users.json()
+    setUsers(json.data)
+  })
+
   return (
     <React.Fragment>
       <nav>
@@ -77,7 +94,7 @@ const NavBar = () => {
       <div id='modal1' className='modal' ref={modal}>
         <div className='modal-content' style={{ color: 'black' }}>
           <input
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => fetchUsers(e.target.value)}
             type='text'
             placeholder='search users'
             value={search}
@@ -86,18 +103,23 @@ const NavBar = () => {
             className='collection'
             style={{ display: 'flex', flexDirection: 'column' }}
           >
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
-            <li className='collection-item'>Alvin</li>
+            {users.map((item) => {
+              return (
+                <li key={item._id} className='collection-item'>
+                  <a
+                    href='#'
+                    key={item._id}
+                    onClick={(e) => {
+                      M.Modal.getInstance(modal.current).close()
+                      e.preventDefault()
+                      history.push(`/profile/${item._id}`)
+                    }}
+                  >
+                    {item.name} - {item.email}
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </div>
         <div className='modal-footer'>
@@ -105,7 +127,7 @@ const NavBar = () => {
             href='#!'
             className='modal-close waves-effect waves-green btn-flat'
           >
-            Agree
+            Close
           </a>
         </div>
       </div>
